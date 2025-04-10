@@ -1,0 +1,23 @@
+{
+  "name": "projet-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thorbjornen/Projet-JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thorbjornen/Projet-JS/issues"
+  },
+  "homepage": "https://github.com/Thorbjornen/Projet-JS#readme",
+  "dependencies": {
+    "ramda": "^0.30.1"
+  }
+}
