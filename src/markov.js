@@ -1,33 +1,15 @@
-const R = require('ramda')
-
-function buildModel(text, order = 2) {
-    const model = {}
-
-    for (let i = 0; i <= text.length - order; i++) {
-        const prefix = text.slice(i, i + order)
-        const next = text[i + order]
-
-        if (!next) continue
-
-        model[prefix] = model[prefix] || {}
-        model[prefix][next] = (model[prefix][next] || 0) + 1
-    }
-
-    return model
-}
+const R = require('ramda');
 
 function predictNext(model, context) {
-    const order = Object.keys(model)[0]?.length || 1
-    const key = context.slice(-order)
-    const possibilities = model[key]
+  const nextLetters = model[context.toLowerCase()];
+  if (!nextLetters) {
+    return [];
+  }
 
-    if (!possibilities) return []
-
-    return R.pipe(
-        R.toPairs,
-        R.sortBy(([_, count]) => -count),
-        R.map(R.head)
-    )(possibilities)
+  return R.pipe(
+      R.toPairs,                 // [ [lettre, fréquence], ... ]
+      R.sortBy(R.head)           // trie alphabétiquement par lettre
+  )(nextLetters);
 }
 
-module.exports = { buildModel, predictNext }
+module.exports = { predictNext };

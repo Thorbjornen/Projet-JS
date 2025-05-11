@@ -1,13 +1,23 @@
-const fs = require('fs')
-const path = require('path')
-const { buildModel } = require('./markov')
+const fs = require('node:fs')
+const R = require('ramda')
 
-const raw = fs.readFileSync(path.join(__dirname, '../data/dictionnaire.txt'), 'utf8')
-const text = raw
-    .toLowerCase()
-    .replace(/[^a-zàâçéèêëîïôûùüÿñæœ]/gi, '')
+const raw = fs.readFileSync('./data/corpus.txt', 'utf8')
+const words = raw.toLowerCase().match(/\w+/g)
 
-const model = buildModel(text, 2)
-fs.writeFileSync(path.join(__dirname, '../model/markov.json'), JSON.stringify(model, null, 2))
+const model = {}
 
-console.log('✅ Modèle entraîné avec succès.')
+for (const word of words) {
+  for (let i = 0; i < word.length - 1; i++) {
+    const prefix = word.slice(0, i + 1)
+    const nextChar = word[i + 1]
+
+    if (!model[prefix]) {
+      model[prefix] = {}
+    }
+
+    model[prefix][nextChar] = (model[prefix][nextChar] || 0) + 1
+  }
+}
+
+fs.writeFileSync('./model/markov.json', JSON.stringify(model, null, 2), 'utf8')
+console.log('Modèle de Markov généré avec succès.')

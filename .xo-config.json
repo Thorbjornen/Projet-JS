@@ -1,0 +1,8 @@
+{
+  "space": true,
+  "semicolon": false,
+  "rules": {
+    "no-console": "off",
+    "camelcase": "off"
+  }
+}

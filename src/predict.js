@@ -1,38 +1,46 @@
-const fs = require('fs')
-const readline = require('readline')
-const { predictNext } = require('./markov')
+const fs = require('fs');
+const readline = require('readline');
+const { predictNext } = require('./markov');
 
-const model = JSON.parse(fs.readFileSync('./model/markov.json', 'utf8'))
+const model = JSON.parse(fs.readFileSync('./model/markov.json', 'utf8'));
+
 const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+  input: process.stdin,
+  output: process.stdout
+});
 
-let context = ''
-
-console.log('🧠 Tape une lettre, je te proposerai la suite probables (Ctrl+C pour quitter)')
+let context = '';
+console.log('Tapez une lettre :');
 
 function ask() {
-    rl.question(`Lettre suivante (mot en cours : "${context || '[vide]'}) > `, input => {
-        const char = input.toLowerCase().trim()
+  rl.question(`Lettre suivante (mot en cours : "${context || '[vide]'}) > `, (input) => {
+    const char = input.toLowerCase().trim();
 
-        if (!char || char.length !== 1 || !char.match(/[a-zàâçéèêëîïôûùüÿñæœ]/i)) {
-            console.log('❌ Merci de saisir UNE seule lettre valide.')
-            return ask()
-        }
+    if (!char || char.length !== 1 || !char.match(/[a-zàâçéèêëîïôûùüÿñæœ]/i)) {
+      console.log('Saisir une lettre valide.');
+      return ask();
+    }
 
-        context += char
-        const suggestions = predictNext(model, context)
+    context += char;
 
-        if (!suggestions || suggestions.length === 0) {
-            console.log(`🚫 Plus aucune suggestion possible après "${context}". Mot terminé.`)
-            context = ''
-            return ask()
-        }
+    const suggestions = predictNext(model, context);
 
-        console.log(`📌 Lettres probables après "${context}":`, suggestions.slice(0, 5).join(', '))
-        ask()
-    })
+    if (!suggestions || suggestions.length === 0) {
+      console.log(`Aucune suite possible pour "${context}".\nNouveau mot:`);
+      context = '';
+      return ask();
+    }
+
+    console.log(`Lettres probables après "${context}":`);
+    const total = suggestions.reduce((sum, [, count]) => sum + Number(count), 0);
+
+    suggestions.forEach(([letter, count]) => {
+      const percentage = (Number(count) / total) * 100;
+      console.log(`  ${letter} : ${percentage.toFixed(2)}%`);
+    });
+
+    ask();
+  });
 }
 
-ask()
+ask();

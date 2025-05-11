@@ -1,39 +1,21 @@
 {
-  "name": "projet-js",
+  "name": "markov-predictor",
   "version": "1.0.0",
-  "description": "Prédiction de la lettre suivante avec Markov",
+  "description": "Modèle de Markov pour prédiction de lettres avec Ramda",
   "main": "src/predict.js",
   "scripts": {
-    "train": "node src/train.js",
     "start": "node src/predict.js",
-    "test": "node test/test.js",
     "lint": "xo",
-    "fix": "xo --fix",
-    "gulp-train": "gulp train",
-    "gulp-watch": "gulp watch"
+    "format": "xo --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Thorbjornen/Projet-JS.git"
-  },
-  "author": "Thorbjornen",
-  "bugs": {
-    "url": "https://github.com/Thorbjornen/Projet-JS/issues"
-  },
-  "homepage": "https://github.com/Thorbjornen/Projet-JS#readme",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "ramda": "^0.30.1"
+    "ramda": "^0.29.0"
   },
   "devDependencies": {
     "gulp": "^5.0.0",
-    "xo": "^0.53.1"
-  },
-  "xo": {
-    "prettier": true,
-    "space": true,
-    "semicolon": false,
-    "rules": {
-      "no-console": "off"
-    }
+    "xo": "^0.56.0"
   }
 }
