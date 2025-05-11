@@ -1,35 +1,33 @@
-const R = require('ramda');
+const R = require('ramda')
 
-function buildModel(text) {
-    const model = {};
+function buildModel(text, order = 2) {
+    const model = {}
 
-    for (let i = 0; i < text.length - 1; i++) {
-        const current = text[i];
-        const next = text[i + 1];
+    for (let i = 0; i <= text.length - order; i++) {
+        const prefix = text.slice(i, i + order)
+        const next = text[i + order]
 
-        if (!model[current]) {
-            model[current] = {};
-        }
+        if (!next) continue
 
-        model[current][next] = (model[current][next] || 0) + 1;
+        model[prefix] = model[prefix] || {}
+        model[prefix][next] = (model[prefix][next] || 0) + 1
     }
 
-    return model;
+    return model
 }
 
-function predictNext(model, currentChar) {
-    const transitions = model[currentChar];
-    if (!transitions) return [];
+function predictNext(model, context) {
+    const order = Object.keys(model)[0]?.length || 1
+    const key = context.slice(-order)
+    const possibilities = model[key]
 
-    const sorted = R.pipe(
+    if (!possibilities) return []
+
+    return R.pipe(
         R.toPairs,
-        R.sortBy(([_, count]) => -count)
-    )(transitions);
-
-    return sorted.map(([char]) => char);
+        R.sortBy(([_, count]) => -count),
+        R.map(R.head)
+    )(possibilities)
 }
 
-module.exports = {
-    buildModel,
-    predictNext
-};
+module.exports = { buildModel, predictNext }

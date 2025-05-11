@@ -1,10 +1,38 @@
-const fs = require('fs');
-const { predictNext } = require('./markov');
+const fs = require('fs')
+const readline = require('readline')
+const { predictNext } = require('./markov')
 
-const model = JSON.parse(fs.readFileSync('./model.json', 'utf-8'));
+const model = JSON.parse(fs.readFileSync('./model/markov.json', 'utf8'))
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+})
 
-const input = process.argv[2] || 'e';
+let context = ''
 
-const suggestions = predictNext(model, input);
+console.log('🧠 Tape une lettre, je te proposerai la suite probables (Ctrl+C pour quitter)')
 
-console.log(`➡️ À partir de "${input}", lettres probables :`, suggestions.slice(0, 5));
+function ask() {
+    rl.question(`Lettre suivante (mot en cours : "${context || '[vide]'}) > `, input => {
+        const char = input.toLowerCase().trim()
+
+        if (!char || char.length !== 1 || !char.match(/[a-zàâçéèêëîïôûùüÿñæœ]/i)) {
+            console.log('❌ Merci de saisir UNE seule lettre valide.')
+            return ask()
+        }
+
+        context += char
+        const suggestions = predictNext(model, context)
+
+        if (!suggestions || suggestions.length === 0) {
+            console.log(`🚫 Plus aucune suggestion possible après "${context}". Mot terminé.`)
+            context = ''
+            return ask()
+        }
+
+        console.log(`📌 Lettres probables après "${context}":`, suggestions.slice(0, 5).join(', '))
+        ask()
+    })
+}
+
+ask()

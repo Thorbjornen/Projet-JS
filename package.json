@@ -1,23 +1,39 @@
 {
   "name": "projet-js",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Prédiction de la lettre suivante avec Markov",
+  "main": "src/predict.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "train": "node src/train.js",
+    "start": "node src/predict.js",
+    "test": "node test/test.js",
+    "lint": "xo",
+    "fix": "xo --fix",
+    "gulp-train": "gulp train",
+    "gulp-watch": "gulp watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Thorbjornen/Projet-JS.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Thorbjornen",
   "bugs": {
     "url": "https://github.com/Thorbjornen/Projet-JS/issues"
   },
   "homepage": "https://github.com/Thorbjornen/Projet-JS#readme",
   "dependencies": {
     "ramda": "^0.30.1"
+  },
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "xo": "^0.53.1"
+  },
+  "xo": {
+    "prettier": true,
+    "space": true,
+    "semicolon": false,
+    "rules": {
+      "no-console": "off"
+    }
   }
 }

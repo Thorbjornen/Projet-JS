@@ -1,9 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const { buildModel } = require('./markov');
+const fs = require('fs')
+const path = require('path')
+const { buildModel } = require('./markov')
 
-const corpus = fs.readFileSync(path.join(__dirname, '../data/corpus.txt'), 'utf-8').toLowerCase();
-const model = buildModel(corpus);
+const raw = fs.readFileSync(path.join(__dirname, '../data/dictionnaire.txt'), 'utf8')
+const text = raw
+    .toLowerCase()
+    .replace(/[^a-zàâçéèêëîïôûùüÿñæœ]/gi, '')
 
-fs.writeFileSync('./model.json', JSON.stringify(model, null, 2));
-console.log('✅ Modèle Markov entraîné et sauvegardé.');
+const model = buildModel(text, 2)
+fs.writeFileSync(path.join(__dirname, '../model/markov.json'), JSON.stringify(model, null, 2))
+
+console.log('✅ Modèle entraîné avec succès.')
