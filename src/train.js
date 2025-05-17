@@ -20,4 +20,4 @@ for (const word of words) {
 }
 
 fs.writeFileSync('./model/markov.json', JSON.stringify(model, null, 2), 'utf8')
-console.log('Modèle de Markov généré avec succès.')
+console.log('Modèle crée')

@@ -26,12 +26,12 @@ function ask() {
     const suggestions = predictNext(model, context);
 
     if (!suggestions || suggestions.length === 0) {
-      console.log(`Aucune suite possible pour "${context}".\nNouveau mot:`);
+      console.log(`Pas de suite possible pour "${context}".\nNouveau mot:`);
       context = '';
       return ask();
     }
 
-    console.log(`Lettres probables après "${context}":`);
+    console.log(`Lettres suivante probable "${context}":`);
     const total = suggestions.reduce((sum, [, count]) => sum + Number(count), 0);
 
     suggestions.forEach(([letter, count]) => {

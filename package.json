@@ -1,7 +1,7 @@
 {
   "name": "markov-predictor",
   "version": "1.0.0",
-  "description": "Modèle de Markov pour prédiction de lettres avec Ramda",
+  "description": "Prédiction de lettres suivantes",
   "main": "src/predict.js",
   "scripts": {
     "start": "node src/predict.js",

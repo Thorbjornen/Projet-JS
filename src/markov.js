@@ -7,8 +7,8 @@ function predictNext(model, context) {
   }
 
   return R.pipe(
-      R.toPairs,                 // [ [lettre, fréquence], ... ]
-      R.sortBy(R.head)           // trie alphabétiquement par lettre
+      R.toPairs,
+      R.sortBy(R.head)
   )(nextLetters);
 }
 
